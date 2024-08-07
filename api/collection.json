@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "2b7616ba-ff1d-45a5-9d73-7f588c508687",
+		"name": "Renova Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37433130",
+		"_collection_link": "https://darknessxk-personal.postman.co/workspace/c5c47be3-53e3-48d3-8e95-43ea899b972d/collection/37433130-2b7616ba-ff1d-45a5-9d73-7f588c508687?action=share&source=collection_link&creator=37433130"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"luiz@darknessxk.com\",\r\n    \"firstName\": \"Luiz\",\r\n    \"lastName\": \"Felipe\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/auth/register",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Is In Use",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"luiz@darknessxk.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/auth/is_in_use",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"auth",
+								"is_in_use"
+							]
+						},
+						"description": "Checks if the e-mail is already in use"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.token && response.token.length) {\r",
+									"    pm.collectionVariables.set(\"AUTH_TOKEN\", response.token)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"luiz@darknessxk.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/auth/login",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication related path"
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Donations",
+					"item": [
+						{
+							"name": "Register Donation",
+							"protocolProfileBehavior": {
+								"disableCookies": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"value\": 100.0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects/{{PROJECT_ID}}/donations",
+									"protocol": "{{PROTO}}",
+									"host": [
+										"{{HOST}}{{API_PATH}}"
+									],
+									"path": [
+										"projects",
+										"{{PROJECT_ID}}",
+										"donations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Donation List",
+							"protocolProfileBehavior": {
+								"disableCookies": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects/{{PROJECT_ID}}/donations",
+									"protocol": "{{PROTO}}",
+									"host": [
+										"{{HOST}}{{API_PATH}}"
+									],
+									"path": [
+										"projects",
+										"{{PROJECT_ID}}",
+										"donations"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Projects",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects?filters[owner]=1",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "filters[owner]",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects Categories",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects/categories",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"projects",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project by ID",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects/{{PROJECT_ID}}",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"projects",
+								"{{PROJECT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Novo teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects/{{PROJECT_ID}}",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"projects",
+								"{{PROJECT_ID}}"
+							]
+						},
+						"description": "Can update any field inside an existing project"
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Project",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Hardware Project\",\r\n    \"description\": \"Developing FPGA Hardware\",\r\n    \"meta\": 2300.0,\r\n    \"category\": \"technology\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTO}}://{{HOST}}{{API_PATH}}/projects/{{PROJECT_ID}}",
+							"protocol": "{{PROTO}}",
+							"host": [
+								"{{HOST}}{{API_PATH}}"
+							],
+							"path": [
+								"projects",
+								"{{PROJECT_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AUTH_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.cookies.clear();"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "PROTO",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "API_PATH",
+			"value": "/api",
+			"type": "string"
+		},
+		{
+			"key": "PROJECT_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "AUTH_TOKEN",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -11,6 +11,10 @@
   * TailwindCSS
   * React Query
 
+## Documentação
+
+Está na pasta api.
+
 ## Como Rodar
 #### Passo a Passo
 
@@ -18,7 +22,6 @@
 * Rodar o docker-compose up -d
 
 - Acessar http://localhost:8001 para o Frontend
-- Acessar http://localhost:8000/api/doc.json para a documentação do Swagger
 - Portas de Database expostas pela porta 13306
 - Health check é necessário para saber o estado do serviço (Backend e Database devem estar healthy para rodar o Frontend de forma apropriada)
 
