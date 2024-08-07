@@ -1,0 +1,53 @@
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: back.Dockerfile
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/server.conf:/etc/nginx/conf.d/default.conf
+    env_file:
+      - backend.env
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "8080:8080"
+
+  database:
+    image: mysql:${MYSQL_VERSION:-9}
+    volumes:
+      - database_data:/var/lib/mysql
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - database.env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB:-app}
+      MYSQL_PASSWORD: ${MYSQL_PWD:-!ChangeThis!}
+      MYSQL_USER: ${MYSQL_USR:-app}
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "13306:3306"
+    
+  frontend:
+    build:
+      context: ./
+      dockerfile: front.Dockerfile
+    restart: always
+    ports:
+      - "8081:3000"
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - frontend.env
+    depends_on:
+      - backend
+
+volumes:
+  database_data:
